@@ -18,7 +18,7 @@ const HeroSection = ({ onExploreClick }: { onExploreClick: () => void }) => {
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         {/* Crown icon */}
         <motion.div
-          className="text-5xl mb-4"
+          className="text-4xl sm:text-5xl md:text-6xl mb-2 sm:mb-4"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -45,7 +45,7 @@ const HeroSection = ({ onExploreClick }: { onExploreClick: () => void }) => {
         </motion.p>
 
         <motion.h1
-          className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-gradient-gold glow-text mb-4 tracking-wider uppercase"
+          className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gradient-gold glow-text mb-2 sm:mb-4 tracking-tight sm:tracking-wider uppercase leading-tight"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
@@ -54,7 +54,7 @@ const HeroSection = ({ onExploreClick }: { onExploreClick: () => void }) => {
         </motion.h1>
 
         <motion.p
-          className="font-display text-2xl md:text-3xl text-primary/80 italic mb-2 tracking-widest"
+          className="font-display text-xl sm:text-2xl md:text-3xl text-primary/80 italic mb-1 sm:mb-2 tracking-tight sm:tracking-widest leading-tight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9 }}
@@ -64,18 +64,18 @@ const HeroSection = ({ onExploreClick }: { onExploreClick: () => void }) => {
 
         {/* Gold ornamental divider */}
         <motion.div
-          className="flex items-center justify-center gap-3 my-8"
+          className="flex items-center justify-center gap-2 sm:gap-3 my-4 sm:my-6 md:my-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.1 }}
         >
-          <div className="w-20 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold)))" }} />
-          <span className="text-primary text-xl">✦</span>
-          <div className="w-20 h-px" style={{ background: "linear-gradient(-90deg, transparent, hsl(var(--gold)))" }} />
+          <div className="w-16 sm:w-20 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold)))" }} />
+          <span className="text-primary text-lg sm:text-xl">✦</span>
+          <div className="w-16 sm:w-20 h-px" style={{ background: "linear-gradient(-90deg, transparent, hsl(var(--gold)))" }} />
         </motion.div>
 
         <motion.p
-          className="text-muted-foreground font-body text-lg md:text-xl max-w-xl mx-auto mb-10"
+          className="text-muted-foreground font-body text-sm sm:text-base md:text-lg max-w-sm sm:max-w-md lg:max-w-xl mx-auto mb-4 sm:mb-6 md:mb-8 leading-tight"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.3 }}
@@ -85,7 +85,7 @@ const HeroSection = ({ onExploreClick }: { onExploreClick: () => void }) => {
 
         <motion.button
           onClick={onExploreClick}
-          className="relative px-12 py-4 rounded-lg font-body font-semibold text-primary-foreground text-lg tracking-widest uppercase overflow-hidden group border-gold-solid shadow-gold-intense"
+          className="relative px-8 sm:px-10 md:px-12 py-3 sm:py-3.5 md:py-4 rounded-lg font-body font-semibold text-primary-foreground text-sm sm:text-base md:text-lg tracking-wide sm:tracking-widest uppercase overflow-hidden group border-gold-solid shadow-gold-intense min-h-[44px]"
           style={{ background: "linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-dark)))" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

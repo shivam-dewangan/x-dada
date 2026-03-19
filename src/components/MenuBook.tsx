@@ -16,68 +16,8 @@ const CornerOrnaments = () => (
   </>
 );
 
-/* ── Cover Page (left panel) ── */
-const CoverPanel = ({ currentPage, totalPages }: { currentPage: number; totalPages: number }) => (
-  <div className="hidden lg:flex flex-col items-center justify-center relative p-8 min-h-full"
-    style={{ background: "linear-gradient(180deg, hsl(var(--navy)), hsl(var(--navy-dark)))" }}
-  >
-    <CornerOrnaments />
-
-    {/* Gold border frame */}
-    <div className="absolute inset-4 border-2 rounded-lg pointer-events-none" style={{ borderColor: "hsl(var(--gold) / 0.25)" }} />
-
-    {/* Top ornament */}
-    <div className="flex items-center gap-2 mb-6">
-      <div className="w-12 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold) / 0.5))" }} />
-      <span className="text-primary/60 text-sm">✦</span>
-      <div className="w-12 h-px" style={{ background: "linear-gradient(-90deg, transparent, hsl(var(--gold) / 0.5))" }} />
-    </div>
-
-    {/* MENU heading */}
-    <h2 className="font-display text-3xl font-bold text-gradient-gold tracking-[0.4em] uppercase mb-8">
-      Menu
-    </h2>
-
-    {/* Circular logo */}
-    <div className="relative mb-6">
-      <div
-        className="w-32 h-32 rounded-full flex items-center justify-center animate-pulse-glow"
-        style={{
-          border: "2px solid hsl(var(--gold))",
-          background: "linear-gradient(135deg, hsl(var(--navy-light)), hsl(var(--navy-dark)))",
-        }}
-      >
-        <div className="text-center">
-          <span className="text-3xl">👑</span>
-          <p className="font-display text-xs text-primary tracking-[0.2em] uppercase mt-1">Dada</p>
-        </div>
-      </div>
-    </div>
-
-    {/* Brand name */}
-    <h3 className="font-display text-xl text-primary tracking-[0.3em] uppercase mb-2">
-      Dada Biryani
-    </h3>
-    <p className="font-body text-muted-foreground text-sm tracking-widest uppercase mb-8">
-      Centre
-    </p>
-
-    {/* Divider */}
-    <div className="w-24 h-px mb-8" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold) / 0.4), transparent)" }} />
-
-    {/* Page indicator */}
-    <p className="font-body text-xs text-muted-foreground tracking-widest uppercase">
-      Page {currentPage + 1} of {totalPages}
-    </p>
-
-    {/* Bottom ornament */}
-    <div className="flex items-center gap-2 mt-6">
-      <div className="w-12 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold) / 0.5))" }} />
-      <span className="text-primary/60 text-sm">✦</span>
-      <div className="w-12 h-px" style={{ background: "linear-gradient(-90deg, transparent, hsl(var(--gold) / 0.5))" }} />
-    </div>
-  </div>
-);
+/* ── Cover Page (left panel) - REMOVED per user request ── */
+const CoverPanel = () => <div className="hidden" />;
 
 /* ── Page flip variants ── */
 const enterFromRight = {
@@ -102,6 +42,16 @@ const MenuBook = () => {
   const totalPages = menuData.length + 1;
   const [[page, direction], setPage] = useState([0, 0]);
   const [isFlipping, setIsFlipping] = useState(false);
+
+  // Scroll lock
+  useEffect(() => {
+    document.body.classList.add('no-scroll');
+    document.documentElement.classList.add('no-scroll');
+    return () => {
+      document.body.classList.remove('no-scroll');
+      document.documentElement.classList.remove('no-scroll');
+    };
+  }, []);
 
   const paginate = useCallback(
     (newDirection: number) => {
@@ -134,85 +84,33 @@ const MenuBook = () => {
     return () => window.removeEventListener("keydown", handleKey);
   }, [paginate]);
 
-  const goToPage = useCallback(
-    (idx: number) => {
-      if (isFlipping || idx === page) return;
-      setIsFlipping(true);
-      setPage([idx, idx > page ? 1 : -1]);
-      setTimeout(() => setIsFlipping(false), 750);
-    },
-    [page, isFlipping]
-  );
+  // Removed goToPage - no tabs
 
   const category = page < menuData.length ? menuData[page] : null;
   const enterVariant = direction > 0 ? enterFromRight : enterFromLeft;
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
-      {/* Category tabs bar */}
-      <div className="sticky top-0 z-50 py-3 px-4"
-        style={{
-          background: "linear-gradient(180deg, hsl(var(--navy) / 0.97), hsl(var(--navy) / 0.92))",
-          backdropFilter: "blur(12px)",
-          borderBottom: "1px solid hsl(var(--gold) / 0.2)",
-        }}
-      >
-        <div className="max-w-6xl mx-auto flex items-center justify-center">
-           <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide justify-center">
-             {menuData.map((cat, i) => (
-              <button
-                key={cat.id}
-                onClick={() => goToPage(i)}
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-body transition-all duration-300 whitespace-nowrap ${
-                  page === i
-                    ? "bg-primary text-primary-foreground shadow-gold font-semibold"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                }`}
-              >
-                <span>{cat.emoji}</span>
-                <span className="hidden md:inline">{cat.title}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+  <div className="h-dvh w-dvw bg-background flex flex-col overflow-hidden no-scrollbar">  
 
-      {/* Book area */}
-      <div className="flex-1 flex items-center justify-center p-3 md:p-6 pb-24">
-        <div className="w-full max-w-4xl mx-auto" style={{ perspective: "2000px" }}>
-          {/* Book container */}
-          <div
-            className="grid grid-cols-1 lg:grid-cols-[280px_1fr] rounded-xl overflow-hidden relative"
-            style={{
+      {/* Book area - full screen data */}
+      <div className="flex-1 w-full h-full flex flex-col overflow-hidden">
+        {/* Full screen book - fixed syntax */}
+        <div
+            className="flex-1 h-full w-screen rounded-none overflow-hidden relative p-2 sm:p-4 md:p-6 lg:p-8"
+            style={{ 
+              perspective: "2000px",
               boxShadow: `
-                0 30px 80px -20px rgba(0,0,0,0.7),
-                0 15px 40px -10px rgba(0,0,0,0.5),
+                0 20px 60px -15px rgba(0,0,0,0.6),
+                0 10px 30px -8px rgba(0,0,0,0.4),
                 inset 0 1px 0 hsl(var(--gold) / 0.1)
               `,
               border: "2px solid hsl(var(--gold) / 0.2)",
             }}
           >
-            {/* Left: Cover panel */}
-            <CoverPanel currentPage={page} totalPages={totalPages} />
-
-            {/* Spine binding */}
-            <div className="hidden lg:block absolute left-[280px] top-0 bottom-0 w-3 z-30 pointer-events-none"
-              style={{
-                background: `linear-gradient(90deg,
-                  rgba(0,0,0,0.5) 0%,
-                  hsl(var(--gold) / 0.15) 30%,
-                  rgba(0,0,0,0.3) 60%,
-                  transparent 100%
-                )`,
-              }}
-            />
-
-            {/* Right: Menu content */}
-            <div
-              className="relative overflow-hidden"
+            {/* Full screen menu content */}
+            <div className="relative h-full flex flex-col w-full"
               style={{
                 background: "linear-gradient(135deg, hsl(var(--navy)), hsl(var(--navy-light) / 0.5), hsl(var(--navy)))",
-                minHeight: "75vh",
                 transformStyle: "preserve-3d",
               }}
             >
@@ -264,7 +162,7 @@ const MenuBook = () => {
                   />
 
                   {/* Page content */}
-                  <div className="relative z-0 px-6 md:px-10 py-8 md:py-10">
+                  <div className="relative z-0 flex-1 flex flex-col overflow-y-auto px-3 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-3 md:py-4 h-full no-scrollbar">
                     {category ? (
                       <>
                         {/* Mobile page indicator */}
@@ -283,11 +181,11 @@ const MenuBook = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.3, duration: 0.5 }}
                         >
-                          <span className="text-5xl md:text-6xl drop-shadow-lg">{category.emoji}</span>
-                          <div className="flex-1">
-                            <h2 className="font-display text-2xl md:text-4xl font-bold text-gradient-gold tracking-wider uppercase">
-                              {category.title}
-                            </h2>
+                            <span className="text-4xl sm:text-5xl md:text-6xl drop-shadow-lg">{category.emoji}</span>
+                            <div className="flex-1 min-w-0">
+                              <h2 className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gradient-gold tracking-tight sm:tracking-wider uppercase leading-tight">
+                                {category.title}
+                              </h2>
                             <div className="h-px mt-2" style={{ background: "linear-gradient(90deg, hsl(var(--gold) / 0.5), transparent)" }} />
                           </div>
                         </motion.div>
@@ -320,12 +218,12 @@ const MenuBook = () => {
                           {category.items.map((item, i) => (
                             <motion.div
                               key={item.name}
-                              className="grid gap-1 px-4 py-3 rounded-lg border border-transparent hover:border-primary/20 transition-all duration-300 cursor-default group gold-glow-hover"
+                              className="grid gap-0.5 sm:gap-1 px-3 sm:px-4 py-1.5 sm:py-2 md:py-3 rounded-md border border-transparent hover:border-primary/30 transition-all duration-300 cursor-default group gold-glow-hover text-xs sm:text-sm md:text-base"
                               style={{
                                 gridTemplateColumns: category.hasHalfFull
                                   ? "1fr auto auto"
                                   : "1fr auto",
-                                background: i % 2 === 0 ? "hsl(var(--navy-light) / 0.3)" : "transparent",
+                                background: i % 2 === 0 ? "hsl(var(--navy-light) / 0.25)" : "transparent",
                               }}
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
@@ -354,10 +252,10 @@ const MenuBook = () => {
                         </div>
 
                         {/* Page bottom ornament */}
-                        <div className="flex items-center justify-center mt-10">
-                          <div className="w-16 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold) / 0.3))" }} />
-                          <span className="px-3 text-primary/30 text-lg">✦</span>
-                          <div className="w-16 h-px" style={{ background: "linear-gradient(-90deg, transparent, hsl(var(--gold) / 0.3))" }} />
+                          <div className="flex items-center justify-center mt-4 sm:mt-6 md:mt-8">
+                          <div className="w-12 sm:w-16 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold) / 0.3))" }} />
+                          <span className="px-2 sm:px-3 text-primary/30 text-base sm:text-lg">✦</span>
+                          <div className="w-12 sm:w-16 h-px" style={{ background: "linear-gradient(-90deg, transparent, hsl(var(--gold) / 0.3))" }} />
                         </div>
                       </>
                     ) : (
@@ -368,13 +266,13 @@ const MenuBook = () => {
               </AnimatePresence>
             </div>
           </div>
-        </div>
+      </div>
       </div>
 
-      {/* Navigation Arrows */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2">
-        <span className="text-xs font-body text-muted-foreground mr-2 hidden sm:block">
-          {page + 1}/{totalPages}
+      {/* Compact footer */}
+      <div className="py-2 sm:py-3 min-h-[2.5rem] flex items-center justify-center gap-2 sm:gap-3 shrink-0 z-50 bg-gradient-to-r from-navy/90 to-navy/80 backdrop-blur-md border-t border-gold/30 px-4 sm:px-6">
+        <span className="text-xs sm:text-sm font-body text-muted-foreground/80 mr-2 sm:mr-3 hidden lg:block min-w-[3.5rem] text-center">
+          Pg {page + 1}/{totalPages}
         </span>
         <motion.button
           onClick={() => paginate(-1)}
@@ -404,18 +302,19 @@ const MenuBook = () => {
         </motion.button>
       </div>
 
-      {/* Swipe hint */}
+      {/* Swipe hint - moved higher for visibility */}
       {page === 0 && !isFlipping && (
         <motion.div
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 font-body text-sm px-4 py-2 rounded-full"
+          className="absolute bottom-[20vh] sm:bottom-[22vh] md:bottom-[25vh] left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 font-body text-base sm:text-lg md:text-xl px-6 py-3 rounded-xl max-w-[85vw] mx-4 shadow-xl backdrop-blur-lg border-2"
           style={{
-            background: "hsl(var(--navy) / 0.9)",
-            border: "1px solid hsl(var(--gold) / 0.2)",
-            color: "hsl(var(--cream) / 0.6)",
+            background: "hsl(var(--navy) / 0.97)",
+            borderColor: "hsl(var(--gold) / 0.4)",
+            color: "hsl(var(--cream))",
           }}
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5 }}
+          exit={{ opacity: 0, y: -15 }}
+          transition={{ delay: 0.8, duration: 0.4 }}
         >
           <motion.span
             animate={{ x: [0, 8, 0] }}

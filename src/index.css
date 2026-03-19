@@ -69,6 +69,12 @@
     @apply bg-background text-foreground;
     font-family: var(--font-body);
   }
+
+  body.no-scroll,
+  html.no-scroll {
+    overflow: hidden !important;
+    height: 100vh !important;
+  }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
   }
@@ -78,6 +84,20 @@
   .text-gradient-gold {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-light)), hsl(var(--gold)));
+  }
+
+  /* Responsive clamp typography */
+  .clamp-title {
+    font-size: clamp(1.5rem, 8vw, 4rem);
+    line-height: 1.1;
+  }
+  .clamp-subtitle {
+    font-size: clamp(1rem, 5vw, 2.5rem);
+    line-height: 1.1;
+  }
+  .clamp-body {
+    font-size: clamp(0.875rem, 4vw, 1.25rem);
+    line-height: 1.4;
   }
 
   .bg-gradient-dark {
@@ -223,16 +243,24 @@
   animation: light-sweep 4s ease-in-out infinite;
 }
 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 ::-webkit-scrollbar-track {
   background: hsl(var(--navy));
 }
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--gold) / 0.4);
-  border-radius: 3px;
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--gold) / 0.6);
